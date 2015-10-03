@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class HeroScript : MonoBehaviour
@@ -12,9 +12,9 @@ public class HeroScript : MonoBehaviour
     public Collider2D GroundCheck;
     public float Scaleheart = 0.3f;
 
-    public PolygonCollider2D RunCollider;
-    public PolygonCollider2D JumpCollider;
-    public PolygonCollider2D FallCollider;
+    public Collider2D[] RunColliders;
+    public Collider2D[] JumpColliders;
+    public Collider2D[] FallColliders;
     #endregion
 
     #region PrivateVariables
@@ -27,16 +27,14 @@ public class HeroScript : MonoBehaviour
     #endregion
 
     #region State
+    private const string run = "Run";
+    private const string jump = "Jump";
+    private const string fall = "Fall";
+
     private bool isGrounded = true;
     private bool isPreviouslyGrounded;
     private bool isJump;
     private bool isJumping;
-    #endregion
-
-    #region NowNotUse
-    private const string run = "Run";
-    private const string jump = "Jump";
-    private const string fall = "Fall";
     #endregion
 
     #region CollisionDetectionVariables
@@ -45,7 +43,7 @@ public class HeroScript : MonoBehaviour
     private int count;
     private float epsilon = 0.001f;
 
-    private float normalGravity = 2f;
+    private float normalGravity;
     private float extendedGravity = 20f;
     private int countRepeat = 10;
     #endregion
@@ -55,6 +53,7 @@ public class HeroScript : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        normalGravity = rigidBody.gravityScale;
         spawn = rigidBody.position;
     }
 
@@ -112,17 +111,17 @@ public class HeroScript : MonoBehaviour
         }
         if (!isGrounded && !isJumping)
         {
-            //ActivateCollider(fall);
+            ActivateCollider(fall);
             animator.CrossFade(fall, 0f);
         }
         else if (isJumping)
         {
-            //ActivateCollider(jump);
+            ActivateCollider(jump);
             animator.CrossFade(jump, 0f);
         }
         else if (isGrounded)
         {
-            //ActivateCollider(run);
+            ActivateCollider(run);
             animator.CrossFade(run, 0f);
         }
     }
@@ -148,25 +147,33 @@ public class HeroScript : MonoBehaviour
         }
     }
 
-    #region NotUse
-    void ActivateCollider(string arg)
+    void ActivateCollider(string state)
     {
-        RunCollider.enabled = false;
-        JumpCollider.enabled = false;
-        FallCollider.enabled = false;
-        switch (arg)
+        Func<Collider2D[], bool, bool> ISEnabled = (array, arg) =>
+        {
+            foreach (var item in array) item.enabled = arg;
+            return true;
+        };
+
+        ISEnabled(RunColliders, false);
+        ISEnabled(JumpColliders, false);
+        ISEnabled(FallColliders, false);
+
+        switch (state)
         {
             case run:
-                RunCollider.enabled = true;
+                ISEnabled(RunColliders, true);
                 break;
             case jump:
-                JumpCollider.enabled = true;
+                ISEnabled(JumpColliders, true);
                 break;
             default:
-                FallCollider.enabled = true;
+                ISEnabled(FallColliders, true);
                 break;
         }
     }
+
+    #region NotUse
     private void StickToGroundHelper()
     {
         RaycastHit hitInfo;
