@@ -217,7 +217,7 @@ public class HeroScript : MonoBehaviour
     //Need modify
     void Died()
     {
-        transform.position = spawn;
+        rigidBody.position = Vector3.Lerp(rigidBody.position, spawn, 1f);
         countHearts--;
     }
 
