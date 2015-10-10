@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ManagerPanelsScript : MonoBehaviour
 {
     public GameObject optionPanel;
     public GameObject menuPanel;
     public GameObject runtimePanel;
+    public GameObject messagePanel;
     //private GameObject optionShadow;
 
     public void ShowMenu()
@@ -36,5 +38,16 @@ public class ManagerPanelsScript : MonoBehaviour
     public void HideRuntime()
     {
         runtimePanel.SetActive(false);
+    }
+
+    public void ShowMessage(string arg)
+    {
+        messagePanel.SetActive(true);
+        messagePanel.GetComponentInChildren<Text>().text = arg;
+    }
+
+    public void HideMessage()
+    {
+        messagePanel.SetActive(false);
     }
 }
