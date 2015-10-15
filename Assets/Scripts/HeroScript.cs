@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-public class HeroScript : MonoBehaviour
+public class HeroScript : MonoBehaviour, IRestarterLevel
 {
     #region PublicVariables
     public float Speed = 0.04f;
@@ -229,5 +229,15 @@ public class HeroScript : MonoBehaviour
         {
             GUI.Label(new Rect(positionHearts.x + i * height, positionHearts.y, height, width), Heart);
         }
+    }
+
+    public void RestartLevel()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void LoadLevel(int number)
+    {
+        throw new NotImplementedException();
     }
 }

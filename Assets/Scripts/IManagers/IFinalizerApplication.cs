@@ -3,5 +3,5 @@ using System.Collections;
 
 public interface IFinalizerApplication
 {
-    void Quit();
+    void QuitApplication();
 }

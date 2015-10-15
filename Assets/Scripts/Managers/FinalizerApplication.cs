@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class QuitAplicationScript : MonoBehaviour
+public class FinalizerApplication : IFinalizerApplication
 {
-    public void Quit()
+    public void QuitApplication()
     {
 #if UNITY_STANDALONE
         Application.Quit();
