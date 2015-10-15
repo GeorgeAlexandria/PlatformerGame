@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System;
 
-public class HeroScript : MonoBehaviour, IRestarterLevel
+public class HeroScript : MonoBehaviour
 {
     #region PublicVariables
     public float Speed = 0.04f;

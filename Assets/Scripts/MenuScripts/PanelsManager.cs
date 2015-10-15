@@ -2,13 +2,23 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ManagerPanelsScript : MonoBehaviour
+public class PanelsManager
 {
-    public GameObject optionPanel;
-    public GameObject menuPanel;
-    public GameObject runtimePanel;
-    public GameObject messagePanel;
-    //private GameObject optionShadow;
+    private readonly GameObject optionPanel;
+    private readonly GameObject menuPanel;
+    private readonly GameObject runtimePanel;
+    private readonly GameObject messagePanel;
+    private readonly GameObject shadowPanel;
+
+    public PanelsManager(GameObject optionPanel, GameObject menuPanel,
+        GameObject runtimePanel, GameObject messagePanel, GameObject shadowPanel)
+    {
+        this.optionPanel = optionPanel;
+        this.menuPanel = menuPanel;
+        this.runtimePanel = runtimePanel;
+        this.messagePanel = messagePanel;
+        this.shadowPanel = shadowPanel;
+    }
 
     public void ShowMenu()
     {
@@ -49,5 +59,15 @@ public class ManagerPanelsScript : MonoBehaviour
     public void HideMessage()
     {
         messagePanel.SetActive(false);
+    }
+
+    public void ShowShadow()
+    {
+        shadowPanel.SetActive(true);
+    }
+
+    public void HideShadow()
+    {
+        shadowPanel.SetActive(false);
     }
 }

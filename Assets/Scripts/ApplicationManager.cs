@@ -15,16 +15,16 @@ public class ApplicationManager : MonoBehaviour
     public static readonly IStarterApplication starter = new StarterApplication();
     public static readonly IContinuerLevel continuer = new ContinuerLevel();
     public static readonly IBreakerLevel breaker = new BreakerLevel();
+    public static GuiManager gui { get; private set; }
     //public static readonly IGuiManager guiManager;
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
-    }
+        gui = FindObjectOfType<GuiManager>();
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        gui.StartRequest += starter.StartApplication;
+        gui.QuitRequest += finalizer.QuitApplication;
+        gui.PauseRequest += breaker.PauseLevel;
+        gui.PlayRequest += continuer.PlayLevel;
     }
 }

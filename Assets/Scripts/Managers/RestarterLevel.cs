@@ -4,15 +4,18 @@ using System;
 
 public class RestarterLevel : IRestarterLevel
 {
+    public event LoadRequestEventHandler LoadRequest;
+    public event RestartRequestEventHandler RestartRequest;
+
     public void LoadLevel(int number)
     {
         Application.LoadLevel(number);
-        //Invoke event
+        LoadRequest();
     }
 
     public void RestartLevel()
     {
         Application.LoadLevel(Application.loadedLevel);
-        //Invoke event
+        RestartRequest();
     }
 }

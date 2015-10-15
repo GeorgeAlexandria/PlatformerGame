@@ -6,6 +6,6 @@ public class BreakerLevel : IBreakerLevel
 {
     public void PauseLevel()
     {
-        //Invoke event
+        Time.timeScale = 0;
     }
 }

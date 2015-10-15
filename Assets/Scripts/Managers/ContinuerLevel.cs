@@ -6,6 +6,6 @@ public class ContinuerLevel : IContinuerLevel
 {
     public void PlayLevel()
     {
-        //Invoke event
+        Time.timeScale = 1;
     }
 }
