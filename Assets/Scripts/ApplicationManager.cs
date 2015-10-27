@@ -26,5 +26,6 @@ public class ApplicationManager : MonoBehaviour
         gui.QuitRequest += finalizer.QuitApplication;
         gui.PauseRequest += breaker.PauseLevel;
         gui.PlayRequest += continuer.PlayLevel;
+        gui.RestartRequest += restarter.RestartLevel;
     }
 }

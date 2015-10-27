@@ -22,6 +22,9 @@ public class GuiManager : MonoBehaviour
 
     public delegate void PlayRequestEventHandler();
     public event PlayRequestEventHandler PlayRequest;
+
+    public delegate void RestartRequestEventhandler();
+    public event RestartRequestEventHandler RestartRequest;
     #endregion
 
     private PanelsManager panels;
@@ -29,6 +32,7 @@ public class GuiManager : MonoBehaviour
 
     private const string textRestart = "You really want restart level?";
     private const string textQuit = "You really want quit?";
+    private bool isQuitMessage;
 
     void Awake()
     {
@@ -81,6 +85,7 @@ public class GuiManager : MonoBehaviour
         panels.ShowShadow();
         PauseRequest();
         panels.ShowMessage(textRestart);
+        isQuitMessage = false;
     }
 
     public void RuntimeCloseClick()
@@ -88,5 +93,37 @@ public class GuiManager : MonoBehaviour
         panels.ShowShadow();
         PauseRequest();
         panels.ShowMessage(textQuit);
+        isQuitMessage = true;
+    }
+
+    public void RuntimeYesClick()
+    {
+        if (isQuitMessage)
+        {
+            QuitRequest();
+            return;
+        }
+        RuntimeHideMessageShadow();
+        RestartRequest();
+        RuntimeShowPause();
+    }
+
+    public void RuntimeNoClick()
+    {
+        RuntimeHideMessageShadow();
+        PlayRequest();
+        RuntimeShowPause();
+    }
+
+    private void RuntimeHideMessageShadow()
+    {
+        panels.HideMessage();
+        panels.HideShadow();
+    }
+
+    private void RuntimeShowPause()
+    {
+        runtime.HidePlay();
+        runtime.ShowPause();
     }
 }
