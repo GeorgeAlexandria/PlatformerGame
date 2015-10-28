@@ -105,6 +105,7 @@ public class GuiManager : MonoBehaviour
         }
         RuntimeHideMessageShadow();
         RestartRequest();
+        PlayRequest();
         RuntimeShowPause();
     }
 

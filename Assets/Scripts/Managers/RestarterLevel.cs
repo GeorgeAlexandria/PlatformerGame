@@ -10,12 +10,12 @@ public class RestarterLevel : IRestarterLevel
     public void LoadLevel(int number)
     {
         Application.LoadLevel(number);
-        LoadRequest();
+        //LoadRequest();
     }
 
     public void RestartLevel()
     {
         Application.LoadLevel(Application.loadedLevel);
-        RestartRequest();
+        //RestartRequest();
     }
 }

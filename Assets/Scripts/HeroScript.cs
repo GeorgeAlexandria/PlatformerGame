@@ -7,10 +7,11 @@ public class HeroScript : MonoBehaviour
     #region PublicVariables
     public float Speed = 0.04f;
     public float JumpForce = 13f;
-    public Texture Heart;
     public LayerMask whatIsGround;
     public Collider2D GroundCheck;
+
     public float Scaleheart = 0.3f;
+    public Texture Heart;
 
     public Collider2D[] RunColliders;
     public Collider2D[] JumpColliders;
@@ -18,8 +19,8 @@ public class HeroScript : MonoBehaviour
     #endregion
 
     #region PrivateVariables
-    private Vector3 spawn;
     private readonly Vector2 positionHearts = new Vector2(5, 5);
+
     private Rigidbody2D rigidBody;
     private Animator animator;
     private int countHearts = 3;
@@ -35,6 +36,8 @@ public class HeroScript : MonoBehaviour
     private bool isPreviouslyGrounded;
     private bool isJump;
     private bool isJumping;
+
+    private InnerState state;
     #endregion
 
     #region CollisionDetectionVariables
@@ -48,13 +51,27 @@ public class HeroScript : MonoBehaviour
     private int countRepeat = 10;
     #endregion
 
+    private struct InnerState
+    {
+        public readonly Vector3 position;
+        public readonly int countHearts;
+        public readonly int lastLevel;
+
+        public InnerState(Vector3 position, int countHearts, int lastLevel = 0)
+        {
+            this.position = position;
+            this.countHearts = countHearts;
+            this.lastLevel = lastLevel;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         normalGravity = rigidBody.gravityScale;
-        spawn = rigidBody.position;
+        state = new InnerState(rigidBody.position, countHearts);
     }
 
     bool CheckCount(int arg)
@@ -173,20 +190,6 @@ public class HeroScript : MonoBehaviour
         }
     }
 
-    #region NotUse
-    private void StickToGroundHelper()
-    {
-        RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, groundRadius, Vector3.down, out hitInfo, 1f, whatIsGround))
-        {
-            if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
-            {
-                rigidBody.velocity = Vector3.ProjectOnPlane(rigidBody.velocity, hitInfo.normal);
-            }
-        }
-    }
-    #endregion
-
     //Need modify
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -217,7 +220,7 @@ public class HeroScript : MonoBehaviour
     //Need modify
     void Died()
     {
-        rigidBody.position = Vector3.Lerp(rigidBody.position, spawn, 1f);
+        rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
         countHearts--;
     }
 
@@ -231,13 +234,30 @@ public class HeroScript : MonoBehaviour
         }
     }
 
-    public void RestartLevel()
+    void OnLevelWasLoaded(int level)
     {
-        throw new NotImplementedException();
+        gameObject.SetActive(true);
+        if (level == state.lastLevel)
+        {
+            rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
+            countHearts = state.countHearts;
+            return;
+        }
+        rigidBody.transform.position = Vector3.Lerp(rigidBody.position, GameObject.Find("HeroPosition").transform.position, 1f);
+        state = new InnerState(rigidBody.position, countHearts, level);
     }
 
-    public void LoadLevel(int number)
+    public void Load()
     {
-        throw new NotImplementedException();
+        //gameObject.SetActive(true);
+        //var h = GameObject.Find("HeroPosition");
+        //rigidBody.position = GameObject.Find("HeroPosition").transform.position;
+        //state = new InnerState(rigidBody.position, countHearts);
+    }
+
+    public void Restart()
+    {
+        rigidBody.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
+        countHearts = state.countHearts;
     }
 }

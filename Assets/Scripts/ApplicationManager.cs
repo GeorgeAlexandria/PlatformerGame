@@ -16,16 +16,29 @@ public class ApplicationManager : MonoBehaviour
     public static readonly IContinuerLevel continuer = new ContinuerLevel();
     public static readonly IBreakerLevel breaker = new BreakerLevel();
     public static GuiManager gui { get; private set; }
+
+    //public HeroScript hero;
+    public static HeroScript hero { get; private set; }
+
     //public static readonly IGuiManager guiManager;
 
     void Awake()
     {
+        //Find only active objects
         gui = FindObjectOfType<GuiManager>();
+        hero = FindObjectOfType<HeroScript>();
+        //Find all objects(active, inactive, prefab, assets)
+        //var h = Resources.FindObjectsOfTypeAll<HeroScript>();
 
         gui.StartRequest += starter.StartApplication;
         gui.QuitRequest += finalizer.QuitApplication;
         gui.PauseRequest += breaker.PauseLevel;
         gui.PlayRequest += continuer.PlayLevel;
         gui.RestartRequest += restarter.RestartLevel;
+
+        //starter.LoadRequest += hero.Load;
+
+        //restarter.LoadRequest += hero.Load;
+        //restarter.RestartRequest += hero.Restart;
     }
 }
