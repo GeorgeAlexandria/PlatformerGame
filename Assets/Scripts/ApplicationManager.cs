@@ -35,6 +35,7 @@ public class ApplicationManager : MonoBehaviour
         gui.LoadRequest += restarter.LoadLevel;
         gui.LoadMenuRequest += () =>
         {
+            Destroy(FindObjectOfType<CameraScript>());
             Destroy(gui.gameObject);
             Destroy(hero.gameObject);
             Destroy(this.gameObject);
@@ -43,6 +44,8 @@ public class ApplicationManager : MonoBehaviour
 
         hero.ChangeCountHeartsRequest += gui.DrawHearts;
         hero.FinishLevel += gui.FinishLevelClick;
+        hero.AwakeRequest += breaker.PauseLevel;
+        hero.LoadRequest += continuer.PlayLevel;
 
         //starter.LoadRequest += hero.Load;
 

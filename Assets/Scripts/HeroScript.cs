@@ -22,6 +22,12 @@ public class HeroScript : MonoBehaviour
 
     public delegate void FinishLevelEventHandler();
     public event FinishLevelEventHandler FinishLevel;
+
+    public delegate void AwakeEventHandler();
+    public event AwakeEventHandler AwakeRequest;
+
+    public delegate void LoadEventHandler();
+    public event LoadEventHandler LoadRequest;
     #endregion
 
     #region PrivateVariables
@@ -87,13 +93,15 @@ public class HeroScript : MonoBehaviour
     }
 
     // Use this for initialization
-    //void Start()
-    //{
-    //    rigidBody = GetComponent<Rigidbody2D>();
-    //    animator = GetComponent<Animator>();
-    //    normalGravity = rigidBody.gravityScale;
-    //    state = new InnerState(rigidBody.position, countHearts);
-    //}
+    void Start()
+    {
+        AwakeRequest();
+
+        //rigidBody = GetComponent<Rigidbody2D>();
+        //animator = GetComponent<Animator>();
+        //normalGravity = rigidBody.gravityScale;
+        //state = new InnerState(rigidBody.position, countHearts);
+    }
 
     bool CheckCount(int arg)
     {
@@ -252,6 +260,7 @@ public class HeroScript : MonoBehaviour
     void OnLevelWasLoaded(int level)
     {
         if (level == 0) return;
+        LoadRequest();
         gameObject.SetActive(true);
         if (level == state.lastLevel)
         {
