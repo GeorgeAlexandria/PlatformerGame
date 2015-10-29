@@ -14,5 +14,10 @@ public interface IRestarterLevel
 
     event LoadRequestEventHandler LoadRequest;
 
+    /// <summary>
+    /// Load next level after last loaded
+    /// </summary>
+    void LoadLevel();
+
     void LoadLevel(int number);
 }

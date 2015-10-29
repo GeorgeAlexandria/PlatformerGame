@@ -30,15 +30,29 @@ public class GuiManager : MonoBehaviour
 
     public delegate void RestartRequestEventhandler();
     public event RestartRequestEventHandler RestartRequest;
+
+    public delegate void LoadRequestEventHandler();
+    public event LoadRequestEventHandler LoadRequest;
+
+    public event LoadRequestEventHandler LoadMenuRequest;
     #endregion
 
     private PanelsManager panels;
     private RuntimeManager runtime;
     private HeartsManager hearts;
 
+    private enum StateMessage
+    {
+        None,
+        Restart,
+        Quit,
+        Finish
+    }
+
     private const string textRestart = "You really want restart level?";
     private const string textQuit = "You really want quit?";
-    private bool isQuitMessage;
+    private const string textFinish = "Congratulation! You passed this level!\nDo you want to continue?";
+    private StateMessage state;
 
     void Awake()
     {
@@ -93,7 +107,7 @@ public class GuiManager : MonoBehaviour
         panels.ShowShadow();
         PauseRequest();
         panels.ShowMessage(textRestart);
-        isQuitMessage = false;
+        state = StateMessage.Restart;
     }
 
     public void RuntimeCloseClick()
@@ -101,27 +115,67 @@ public class GuiManager : MonoBehaviour
         panels.ShowShadow();
         PauseRequest();
         panels.ShowMessage(textQuit);
-        isQuitMessage = true;
+        state = StateMessage.Quit;
+    }
+
+    public void FinishLevelClick()
+    {
+        panels.ShowShadow();
+        PauseRequest();
+        panels.ShowMessage(textFinish);
+        state = StateMessage.Finish;
     }
 
     public void RuntimeYesClick()
     {
-        if (isQuitMessage)
+        switch (state)
         {
-            QuitRequest();
-            return;
+            case StateMessage.None:
+                break;
+            case StateMessage.Restart:
+                RuntimeHideMessageShadow();
+                RestartRequest();
+                PlayRequest();
+                RuntimeShowPause();
+                break;
+            case StateMessage.Quit:
+                QuitRequest();
+                break;
+            case StateMessage.Finish:
+                RuntimeHideMessageShadow();
+                LoadRequest();
+                PlayRequest();
+                RuntimeShowPause();
+                break;
+            default:
+                break;
         }
-        RuntimeHideMessageShadow();
-        RestartRequest();
-        PlayRequest();
-        RuntimeShowPause();
     }
 
     public void RuntimeNoClick()
     {
-        RuntimeHideMessageShadow();
-        PlayRequest();
-        RuntimeShowPause();
+        switch (state)
+        {
+            //case StateMessage.None:
+            //    break;
+            //case StateMessage.Restart:
+            //    break;
+            //case StateMessage.Quit:
+            //    break;
+            case StateMessage.Finish:
+                RuntimeHideMessageShadow();
+                RuntimeShowPause();
+                PlayRequest();
+                panels.HideRuntime();
+                panels.HideHearts();
+                LoadMenuRequest();
+                break;
+            default:
+                RuntimeHideMessageShadow();
+                PlayRequest();
+                RuntimeShowPause();
+                break;
+        }
     }
 
     private void RuntimeHideMessageShadow()

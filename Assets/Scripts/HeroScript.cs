@@ -19,6 +19,9 @@ public class HeroScript : MonoBehaviour
     #region Events
     public delegate void ChangeCountHeartsEventHandler(int countHearts);
     public event ChangeCountHeartsEventHandler ChangeCountHeartsRequest;
+
+    public delegate void FinishLevelEventHandler();
+    public event FinishLevelEventHandler FinishLevel;
     #endregion
 
     #region PrivateVariables
@@ -75,14 +78,22 @@ public class HeroScript : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         normalGravity = rigidBody.gravityScale;
         state = new InnerState(rigidBody.position, countHearts);
     }
+
+    // Use this for initialization
+    //void Start()
+    //{
+    //    rigidBody = GetComponent<Rigidbody2D>();
+    //    animator = GetComponent<Animator>();
+    //    normalGravity = rigidBody.gravityScale;
+    //    state = new InnerState(rigidBody.position, countHearts);
+    //}
 
     bool CheckCount(int arg)
     {
@@ -208,6 +219,10 @@ public class HeroScript : MonoBehaviour
         {
             Died();
         }
+        else if (collision.collider.tag == "Finish")
+        {
+            FinishLevel();
+        }
     }
 
     //Need modify
@@ -236,6 +251,7 @@ public class HeroScript : MonoBehaviour
 
     void OnLevelWasLoaded(int level)
     {
+        if (level == 0) return;
         gameObject.SetActive(true);
         if (level == state.lastLevel)
         {

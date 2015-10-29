@@ -32,8 +32,17 @@ public class ApplicationManager : MonoBehaviour
         gui.PauseRequest += breaker.PauseLevel;
         gui.PlayRequest += continuer.PlayLevel;
         gui.RestartRequest += restarter.RestartLevel;
+        gui.LoadRequest += restarter.LoadLevel;
+        gui.LoadMenuRequest += () =>
+        {
+            Destroy(gui.gameObject);
+            Destroy(hero.gameObject);
+            Destroy(this.gameObject);
+            restarter.LoadLevel(0);
+        };
 
         hero.ChangeCountHeartsRequest += gui.DrawHearts;
+        hero.FinishLevel += gui.FinishLevelClick;
 
         //starter.LoadRequest += hero.Load;
 
