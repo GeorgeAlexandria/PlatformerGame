@@ -13,7 +13,5 @@ public class StarterApplication : IStarterApplication
         //Use invoke to delay calling of LoadDelayed by half the length of fadeColorAnimationClip
         //Invoke("LoadDelayed", fadeColorAnimationClip.length * .5f);
         Application.LoadLevelAsync(sceneToStart);
-        //ApplicationManager.hero.Load();
-        //LoadRequest();
     }
 }

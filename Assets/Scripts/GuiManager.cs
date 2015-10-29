@@ -9,6 +9,11 @@ public class GuiManager : MonoBehaviour
     public GameObject runtimePanel;
     public GameObject messagePanel;
     public GameObject shadowPanel;
+    public GameObject heartPanel;
+
+    public float ScaleHeart;
+    public Sprite Heart;
+    public Vector2 Position;
 
     #region Events
     public delegate void QuitRequestEventHandler();
@@ -29,6 +34,7 @@ public class GuiManager : MonoBehaviour
 
     private PanelsManager panels;
     private RuntimeManager runtime;
+    private HeartsManager hearts;
 
     private const string textRestart = "You really want restart level?";
     private const string textQuit = "You really want quit?";
@@ -36,8 +42,9 @@ public class GuiManager : MonoBehaviour
 
     void Awake()
     {
-        panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel);
+        panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel, heartPanel);
         runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
+        hearts = new HeartsManager(Heart, Position, ScaleHeart);
     }
 
     public void StartClick()
@@ -45,6 +52,7 @@ public class GuiManager : MonoBehaviour
         panels.HideMenu();
         StartRequest();
         panels.ShowRuntime();
+        panels.ShowHearts();
     }
 
     public void OptionClick()
@@ -126,5 +134,10 @@ public class GuiManager : MonoBehaviour
     {
         runtime.HidePlay();
         runtime.ShowPause();
+    }
+
+    public void DrawHearts(int count)
+    {
+        hearts.ChangeCount(count);
     }
 }

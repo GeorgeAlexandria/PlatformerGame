@@ -17,10 +17,7 @@ public class ApplicationManager : MonoBehaviour
     public static readonly IBreakerLevel breaker = new BreakerLevel();
     public static GuiManager gui { get; private set; }
 
-    //public HeroScript hero;
     public static HeroScript hero { get; private set; }
-
-    //public static readonly IGuiManager guiManager;
 
     void Awake()
     {
@@ -35,6 +32,8 @@ public class ApplicationManager : MonoBehaviour
         gui.PauseRequest += breaker.PauseLevel;
         gui.PlayRequest += continuer.PlayLevel;
         gui.RestartRequest += restarter.RestartLevel;
+
+        hero.ChangeCountHeartsRequest += gui.DrawHearts;
 
         //starter.LoadRequest += hero.Load;
 

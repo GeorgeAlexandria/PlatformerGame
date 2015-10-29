@@ -9,15 +9,18 @@ public class PanelsManager
     private readonly GameObject runtimePanel;
     private readonly GameObject messagePanel;
     private readonly GameObject shadowPanel;
+    private readonly GameObject heartPanel;
 
     public PanelsManager(GameObject optionPanel, GameObject menuPanel,
-        GameObject runtimePanel, GameObject messagePanel, GameObject shadowPanel)
+        GameObject runtimePanel, GameObject messagePanel,
+        GameObject shadowPanel, GameObject heartPanel)
     {
         this.optionPanel = optionPanel;
         this.menuPanel = menuPanel;
         this.runtimePanel = runtimePanel;
         this.messagePanel = messagePanel;
         this.shadowPanel = shadowPanel;
+        this.heartPanel = heartPanel;
     }
 
     public void ShowMenu()
@@ -69,5 +72,15 @@ public class PanelsManager
     public void HideShadow()
     {
         shadowPanel.SetActive(false);
+    }
+
+    public void ShowHearts()
+    {
+        heartPanel.SetActive(true);
+    }
+
+    public void HideHearts()
+    {
+        heartPanel.SetActive(false);
     }
 }

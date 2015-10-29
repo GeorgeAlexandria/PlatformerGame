@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class HeroScript : MonoBehaviour
 {
@@ -10,20 +11,29 @@ public class HeroScript : MonoBehaviour
     public LayerMask whatIsGround;
     public Collider2D GroundCheck;
 
-    public float Scaleheart = 0.3f;
-    public Texture Heart;
-
     public Collider2D[] RunColliders;
     public Collider2D[] JumpColliders;
     public Collider2D[] FallColliders;
     #endregion
 
-    #region PrivateVariables
-    private readonly Vector2 positionHearts = new Vector2(5, 5);
+    #region Events
+    public delegate void ChangeCountHeartsEventHandler(int countHearts);
+    public event ChangeCountHeartsEventHandler ChangeCountHeartsRequest;
+    #endregion
 
+    #region PrivateVariables
     private Rigidbody2D rigidBody;
     private Animator animator;
-    private int countHearts = 3;
+    private int innerCountHearts = 3;
+    private int countHearts
+    {
+        get { return innerCountHearts; }
+        set
+        {
+            innerCountHearts = value;
+            ChangeCountHeartsRequest(innerCountHearts);
+        }
+    }
     private const float groundRadius = 0.2f;
     #endregion
 
@@ -224,16 +234,6 @@ public class HeroScript : MonoBehaviour
         countHearts--;
     }
 
-    void OnGUI()
-    {
-        float height = Heart.height * Scaleheart;
-        float width = Heart.width * Scaleheart;
-        for (int i = 0; i < countHearts; i++)
-        {
-            GUI.Label(new Rect(positionHearts.x + i * height, positionHearts.y, height, width), Heart);
-        }
-    }
-
     void OnLevelWasLoaded(int level)
     {
         gameObject.SetActive(true);
@@ -244,20 +244,8 @@ public class HeroScript : MonoBehaviour
             return;
         }
         rigidBody.transform.position = Vector3.Lerp(rigidBody.position, GameObject.Find("HeroPosition").transform.position, 1f);
+        //Only for invoke event
+        countHearts = countHearts;
         state = new InnerState(rigidBody.position, countHearts, level);
-    }
-
-    public void Load()
-    {
-        //gameObject.SetActive(true);
-        //var h = GameObject.Find("HeroPosition");
-        //rigidBody.position = GameObject.Find("HeroPosition").transform.position;
-        //state = new InnerState(rigidBody.position, countHearts);
-    }
-
-    public void Restart()
-    {
-        rigidBody.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
-        countHearts = state.countHearts;
     }
 }
