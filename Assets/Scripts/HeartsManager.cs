@@ -18,15 +18,13 @@ public class HeartsManager
 
     public void ChangeCount(int count)
     {
+        //Some bug with count<0, it will fix in Hero
+
         Image[] hearts = ApplicationManager.gui.heartPanel.GetComponentsInChildren<Image>();
         int countHeart = 0;
         for (int i = 0; i < hearts.Length; i++)
         {
-            if (!hearts[i].isActiveAndEnabled)
-            {
-                countHeart = i - 1 > 0 ? i - 1 : 0;
-                break;
-            }
+            if (hearts[i].isActiveAndEnabled) countHeart++;
         }
 
         if (count < countHeart)
@@ -51,10 +49,8 @@ public class HeartsManager
             float width = heart.texture.width * scaleHeart;
             for (int i = 0; i < length; i++)
             {
-                GameObject temp = new GameObject();
+                GameObject temp = new GameObject(string.Format("HeartHero{0}", i));
                 temp.AddComponent<Image>();
-                //temp.AddComponent<CanvasRenderer>();
-                //temp.AddComponent<RectTransform>();
                 temp.GetComponent<Image>().sprite = heart;
                 RectTransform rect = temp.GetComponent<RectTransform>();
                 rect.SetParent(ApplicationManager.gui.heartPanel.transform);
