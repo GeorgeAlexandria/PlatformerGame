@@ -18,8 +18,6 @@ public class HeartsManager
 
     public void ChangeCount(int count)
     {
-        //Some bug with count<0, it will fix in Hero
-
         Image[] hearts = ApplicationManager.gui.heartPanel.GetComponentsInChildren<Image>();
         int countHeart = 0;
         for (int i = 0; i < hearts.Length; i++)

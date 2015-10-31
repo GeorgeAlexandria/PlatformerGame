@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public class RestarterLevel : IRestarterLevel
+public class LevelManager : MonoBehaviour
 {
-    public event LoadRequestEventHandler LoadRequest;
-    public event RestartRequestEventHandler RestartRequest;
+    public void PauseLevel()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void PlayLevel()
+    {
+        Time.timeScale = 1;
+    }
 
     public void LoadLevel()
     {
@@ -14,7 +20,8 @@ public class RestarterLevel : IRestarterLevel
 
     public void LoadLevel(int number)
     {
-        Application.LoadLevelAsync(number);
+        Application.LoadLevel(number);
+        //Application.LoadLevelAsync(number);
         //LoadRequest();
     }
 
@@ -23,4 +30,5 @@ public class RestarterLevel : IRestarterLevel
         Application.LoadLevel(Application.loadedLevel);
         //RestartRequest();
     }
+
 }

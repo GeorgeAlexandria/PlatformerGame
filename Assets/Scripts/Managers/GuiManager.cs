@@ -31,7 +31,7 @@ public class GuiManager : MonoBehaviour
     public event PlayRequestEventHandler PlayRequest;
 
     public delegate void RestartRequestEventhandler();
-    public event RestartRequestEventHandler RestartRequest;
+    public event RestartRequestEventhandler RestartRequest;
 
     public delegate void LoadRequestEventHandler();
     public event LoadRequestEventHandler LoadRequest;

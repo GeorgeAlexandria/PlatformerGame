@@ -99,7 +99,8 @@ public class HeroScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        AwakeRequest();
+        //gameObject.SetActive(false);
+        //AwakeRequest();
 
         //rigidBody = GetComponent<Rigidbody2D>();
         //animator = GetComponent<Animator>();
@@ -264,8 +265,10 @@ public class HeroScript : MonoBehaviour
     void OnLevelWasLoaded(int level)
     {
         if (level == 0) return;
-        LoadRequest();
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+
+        //LoadRequest();
+        //gameObject.SetActive(true);
         if (level == state.lastLevel)
         {
             rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
