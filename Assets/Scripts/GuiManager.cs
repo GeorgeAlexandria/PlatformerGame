@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System;
 
 public class GuiManager : MonoBehaviour
 {
@@ -46,13 +48,70 @@ public class GuiManager : MonoBehaviour
         None,
         Restart,
         Quit,
+        Die,
         Finish
     }
 
-    private const string textRestart = "You really want restart level?";
-    private const string textQuit = "You really want quit?";
-    private const string textFinish = "Congratulation! You passed this level!\nDo you want to continue?";
+    private const string textRestart = "You really want to restart level?";
+    private const string textQuit = "You really want to quit?";
+    private const string textFinish = "Congratulations! You passed this level!\nDo you want to continue?";
+    private const string textDie = "Unfortunately, you died... \nDo you want to restart game?";
     private StateMessage state;
+
+    Dictionary<StateMessage, Action> YesFunctions;
+
+    Dictionary<StateMessage, Action> NoFunctions;
+
+    public GuiManager()
+    {
+        #region YesFunction
+        YesFunctions = new Dictionary<StateMessage, Action> {
+        { StateMessage.Die,()=> { } },
+        { StateMessage.Finish,()=>
+        {
+            RuntimeHideMessageShadow();
+            LoadRequest();
+            PlayRequest();
+            RuntimeShowPause();
+        }},
+        { StateMessage.None,()=> { } },
+        { StateMessage.Quit,()=>
+        {
+            QuitRequest();
+        }},
+        { StateMessage.Restart, ()=>
+        {
+            RuntimeHideMessageShadow();
+            RestartRequest();
+            PlayRequest();
+            RuntimeShowPause();
+        }}
+    };
+        #endregion
+
+        #region NoFunctions
+        NoFunctions = new Dictionary<StateMessage, Action> {
+        { StateMessage.Die,()=> { NoFunctions[StateMessage.None](); } },
+        { StateMessage.Finish,()=>
+        {
+            RuntimeHideMessageShadow();
+            RuntimeShowPause();
+            PlayRequest();
+            panels.HideRuntime();
+            panels.HideHearts();
+            LoadMenuRequest();
+        } },
+        { StateMessage.None,()=>
+        {
+            RuntimeHideMessageShadow();
+            PlayRequest();
+            RuntimeShowPause();
+        } },
+        { StateMessage.Quit,()=> { NoFunctions[StateMessage.None](); } },
+        { StateMessage.Restart, ()=> { NoFunctions[StateMessage.None](); } }
+    };
+        #endregion
+    }
 
     void Awake()
     {
@@ -128,54 +187,12 @@ public class GuiManager : MonoBehaviour
 
     public void RuntimeYesClick()
     {
-        switch (state)
-        {
-            case StateMessage.None:
-                break;
-            case StateMessage.Restart:
-                RuntimeHideMessageShadow();
-                RestartRequest();
-                PlayRequest();
-                RuntimeShowPause();
-                break;
-            case StateMessage.Quit:
-                QuitRequest();
-                break;
-            case StateMessage.Finish:
-                RuntimeHideMessageShadow();
-                LoadRequest();
-                PlayRequest();
-                RuntimeShowPause();
-                break;
-            default:
-                break;
-        }
+        YesFunctions[state].Invoke();
     }
 
     public void RuntimeNoClick()
     {
-        switch (state)
-        {
-            //case StateMessage.None:
-            //    break;
-            //case StateMessage.Restart:
-            //    break;
-            //case StateMessage.Quit:
-            //    break;
-            case StateMessage.Finish:
-                RuntimeHideMessageShadow();
-                RuntimeShowPause();
-                PlayRequest();
-                panels.HideRuntime();
-                panels.HideHearts();
-                LoadMenuRequest();
-                break;
-            default:
-                RuntimeHideMessageShadow();
-                PlayRequest();
-                RuntimeShowPause();
-                break;
-        }
+        NoFunctions[state].Invoke();
     }
 
     private void RuntimeHideMessageShadow()
