@@ -41,11 +41,13 @@ public class ApplicationManager : MonoBehaviour
             Destroy(this.gameObject);
             restarter.LoadLevel(0);
         };
+        gui.DiedRequest += () => restarter.LoadLevel(1);
 
         hero.ChangeCountHeartsRequest += gui.DrawHearts;
         hero.FinishLevel += gui.FinishLevelClick;
         hero.AwakeRequest += breaker.PauseLevel;
         hero.LoadRequest += continuer.PlayLevel;
+        hero.DiedRequest += gui.DieClick;
 
         //starter.LoadRequest += hero.Load;
 

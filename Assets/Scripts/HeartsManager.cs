@@ -55,7 +55,7 @@ public class HeartsManager
                 RectTransform rect = temp.GetComponent<RectTransform>();
                 rect.SetParent(ApplicationManager.gui.heartPanel.transform);
                 rect.sizeDelta *= scaleHeart;
-                rect.position = new Vector2(position.x + (i + hearts.Length) * height, position.y);
+                rect.position = new Vector2(position.x + (i + hearts.Length) * width, position.y);
                 rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -rect.anchoredPosition.y);
             }
         }

@@ -37,6 +37,9 @@ public class GuiManager : MonoBehaviour
     public event LoadRequestEventHandler LoadRequest;
 
     public event LoadRequestEventHandler LoadMenuRequest;
+
+    public delegate void DiedRequestEventHandler();
+    public event DiedRequestEventHandler DiedRequest;
     #endregion
 
     private PanelsManager panels;
@@ -66,7 +69,13 @@ public class GuiManager : MonoBehaviour
     {
         #region YesFunction
         YesFunctions = new Dictionary<StateMessage, Action> {
-        { StateMessage.Die,()=> { } },
+        { StateMessage.Die,()=>
+        {
+            RuntimeHideMessageShadow();
+            RuntimeShowPause();
+            PlayRequest();
+            DiedRequest();
+        } },
         { StateMessage.Finish,()=>
         {
             RuntimeHideMessageShadow();
@@ -91,7 +100,7 @@ public class GuiManager : MonoBehaviour
 
         #region NoFunctions
         NoFunctions = new Dictionary<StateMessage, Action> {
-        { StateMessage.Die,()=> { NoFunctions[StateMessage.None](); } },
+        { StateMessage.Die,()=> {NoFunctions[StateMessage.Finish]();  } },
         { StateMessage.Finish,()=>
         {
             RuntimeHideMessageShadow();
@@ -185,14 +194,22 @@ public class GuiManager : MonoBehaviour
         state = StateMessage.Finish;
     }
 
+    public void DieClick()
+    {
+        panels.ShowShadow();
+        PauseRequest();
+        panels.ShowMessage(textDie);
+        state = StateMessage.Die;
+    }
+
     public void RuntimeYesClick()
     {
-        YesFunctions[state].Invoke();
+        YesFunctions[state]();
     }
 
     public void RuntimeNoClick()
     {
-        NoFunctions[state].Invoke();
+        NoFunctions[state]();
     }
 
     private void RuntimeHideMessageShadow()

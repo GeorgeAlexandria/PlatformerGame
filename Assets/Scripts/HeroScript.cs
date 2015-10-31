@@ -26,6 +26,9 @@ public class HeroScript : MonoBehaviour
     public delegate void AwakeEventHandler();
     public event AwakeEventHandler AwakeRequest;
 
+    public delegate void DiedEventHandler();
+    public event DiedEventHandler DiedRequest;
+
     public delegate void LoadEventHandler();
     public event LoadEventHandler LoadRequest;
     #endregion
@@ -41,6 +44,7 @@ public class HeroScript : MonoBehaviour
         {
             innerCountHearts = value;
             ChangeCountHeartsRequest(innerCountHearts);
+            if (innerCountHearts == 0) DiedRequest();
         }
     }
     private const float groundRadius = 0.2f;
