@@ -56,11 +56,6 @@ public class ApplicationManager : MonoBehaviour
     public void StartApplication()
     {
         hero.gameObject.SetActive(true);
-        Invoke("Load", 0.5f);
-    }
-
-    private void Load()
-    {
         Application.LoadLevel(sceneToStart);
     }
 

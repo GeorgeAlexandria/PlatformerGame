@@ -46,6 +46,8 @@ public class GuiManager : MonoBehaviour
     private RuntimeManager runtime;
     private HeartsManager hearts;
 
+    private Animator animator;
+
     private enum StateMessage
     {
         None,
@@ -127,14 +129,22 @@ public class GuiManager : MonoBehaviour
         panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel, heartPanel);
         runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
+
+        animator = GetComponentInChildren<Animator>();
     }
 
     public void StartClick()
     {
+        Invoke("Load", animator.runtimeAnimatorController.animationClips[0].length);
+        animator.SetTrigger("fade");
+    }
+
+    private void Load()
+    {
         panels.HideMenu();
         StartRequest();
-        panels.ShowRuntime();
         panels.ShowHearts();
+        panels.ShowRuntime();
     }
 
     public void OptionClick()
