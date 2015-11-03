@@ -47,6 +47,8 @@ public class GuiManager : MonoBehaviour
     private HeartsManager hearts;
 
     private Animator animator;
+    private GameObject imageLevel;
+    private Text textLevel;
 
     private enum StateMessage
     {
@@ -131,6 +133,10 @@ public class GuiManager : MonoBehaviour
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
 
         animator = GetComponentInChildren<Animator>();
+        imageLevel = GameObject.Find("LevelImage");
+        textLevel = imageLevel.GetComponentInChildren<Text>();
+
+        imageLevel.SetActive(false);
     }
 
     public void StartClick()
