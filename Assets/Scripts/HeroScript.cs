@@ -17,20 +17,15 @@ public class HeroScript : MonoBehaviour
     #endregion
 
     #region Events
-    public delegate void ChangeCountHeartsEventHandler(int countHearts);
-    public event ChangeCountHeartsEventHandler ChangeCountHeartsRequest;
+    public event ApplicationManager.ParametrizedRequestEventHandler<int> ChangeCountHeartsRequest;
 
-    public delegate void FinishLevelEventHandler();
-    public event FinishLevelEventHandler FinishLevel;
+    public event ApplicationManager.RequestEventHandler FinishLevel;
 
-    public delegate void AwakeEventHandler();
-    public event AwakeEventHandler AwakeRequest;
+    public event ApplicationManager.RequestEventHandler AwakeRequest;
 
-    public delegate void DiedEventHandler();
-    public event DiedEventHandler DiedRequest;
+    public event ApplicationManager.RequestEventHandler DiedRequest;
 
-    public delegate void LoadEventHandler();
-    public event LoadEventHandler LoadRequest;
+    public event ApplicationManager.RequestEventHandler LoadRequest;
     #endregion
 
     #region PrivateVariables

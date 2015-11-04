@@ -10,6 +10,12 @@ using System.Collections;
 
 public class ApplicationManager : MonoBehaviour
 {
+    #region Delegate
+    public delegate void RequestEventHandler();
+
+    public delegate void ParametrizedRequestEventHandler<T>(T arg);
+    #endregion
+
     public static GuiManager gui { get; private set; }
 
     public static HeroScript hero { get; private set; }

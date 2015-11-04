@@ -18,28 +18,21 @@ public class GuiManager : MonoBehaviour
     public Vector2 Position;
 
     #region Events
-    public delegate void QuitRequestEventHandler();
-    public event QuitRequestEventHandler QuitRequest;
+    public event ApplicationManager.RequestEventHandler QuitRequest;
 
-    public delegate void StartRequestEventHandler();
-    public event StartRequestEventHandler StartRequest;
+    public event ApplicationManager.RequestEventHandler StartRequest;
 
-    public delegate void PauseRequestEventHandler();
-    public event PauseRequestEventHandler PauseRequest;
+    public event ApplicationManager.RequestEventHandler PauseRequest;
 
-    public delegate void PlayRequestEventHandler();
-    public event PlayRequestEventHandler PlayRequest;
+    public event ApplicationManager.RequestEventHandler PlayRequest;
 
-    public delegate void RestartRequestEventhandler();
-    public event RestartRequestEventhandler RestartRequest;
+    public event ApplicationManager.RequestEventHandler RestartRequest;
 
-    public delegate void LoadRequestEventHandler();
-    public event LoadRequestEventHandler LoadRequest;
+    public event ApplicationManager.RequestEventHandler LoadRequest;
 
-    public event LoadRequestEventHandler LoadMenuRequest;
+    public event ApplicationManager.RequestEventHandler LoadMenuRequest;
 
-    public delegate void DiedRequestEventHandler();
-    public event DiedRequestEventHandler DiedRequest;
+    public event ApplicationManager.RequestEventHandler DiedRequest;
     #endregion
 
     private PanelsManager panels;
