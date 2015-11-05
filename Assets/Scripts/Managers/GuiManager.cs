@@ -83,7 +83,12 @@ public class GuiManager : MonoBehaviour
         { StateMessage.None,()=> { } },
         { StateMessage.Quit,()=>
         {
-            QuitRequest();
+            RuntimeHideMessageShadow();
+            RuntimeShowPause();
+            PlayRequest();
+            panels.HideRuntime();
+            panels.HideHearts();
+            LoadMenuRequest();
         }},
         { StateMessage.Restart, ()=>
         {
@@ -100,12 +105,15 @@ public class GuiManager : MonoBehaviour
         { StateMessage.Die,()=> {NoFunctions[StateMessage.Finish]();  } },
         { StateMessage.Finish,()=>
         {
-            RuntimeHideMessageShadow();
-            RuntimeShowPause();
-            PlayRequest();
-            panels.HideRuntime();
-            panels.HideHearts();
-            LoadMenuRequest();
+            YesFunctions[StateMessage.Quit]();
+#region Old Call
+            //RuntimeHideMessageShadow();
+            //RuntimeShowPause();
+            //PlayRequest();
+            //panels.HideRuntime();
+            //panels.HideHearts();
+            //LoadMenuRequest();
+            #endregion
         } },
         { StateMessage.None,()=>
         {
