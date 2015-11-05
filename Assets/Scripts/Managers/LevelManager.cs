@@ -13,6 +13,14 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public int NextLevel
+    {
+        get
+        {
+            return Application.loadedLevel + 1;
+        }
+    }
+
     public void LoadLevel()
     {
         Application.LoadLevel(Application.loadedLevel + 1);

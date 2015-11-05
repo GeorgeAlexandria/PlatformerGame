@@ -152,6 +152,7 @@ public class GuiManager : MonoBehaviour
 
     public void StartClick()
     {
+        //animatorMenu.SetTrigger("fade");
         animatorMenu.SetTrigger("fade");
         //imageLevel.SetActive(true);
         //animatorLevel.SetTrigger("load");
@@ -160,7 +161,7 @@ public class GuiManager : MonoBehaviour
               //textLevel.enabled = true;
               textLevel.text = "Level";
               animatorLevel.SetTrigger("load");
-              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[0].length, Load));
+              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length, Load));
           }));
 
         //Invoke("Load", animatorMenu.runtimeAnimatorController.animationClips[0].length + animatorLevel.runtimeAnimatorController.animationClips[0].length);
@@ -170,6 +171,8 @@ public class GuiManager : MonoBehaviour
     {
         panels.HideMenu();
         StartRequest();
+        animatorLevel.SetTrigger("reset");
+        animatorLevel.ResetTrigger("load");
         panels.ShowHearts();
         panels.ShowRuntime();
     }
