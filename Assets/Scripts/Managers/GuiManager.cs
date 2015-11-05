@@ -140,14 +140,30 @@ public class GuiManager : MonoBehaviour
         animatorMenu = GameObject.Find("MenuPanel").GetComponent<Animator>();
 
         textLevel = imageLevel.GetComponentInChildren<Text>();
+        //textLevel.enabled = false;
+        //imageLevel.SetActive(false);
+    }
 
-        imageLevel.SetActive(false);
+    static IEnumerator DelayFunction(float time, Action func)
+    {
+        yield return new WaitForSeconds(time);
+        func();
     }
 
     public void StartClick()
     {
-        Invoke("Load", animatorMenu.runtimeAnimatorController.animationClips[0].length);
         animatorMenu.SetTrigger("fade");
+        //imageLevel.SetActive(true);
+        //animatorLevel.SetTrigger("load");
+        StartCoroutine(DelayFunction(animatorMenu.runtimeAnimatorController.animationClips[0].length, () =>
+          {
+              //textLevel.enabled = true;
+              textLevel.text = "Level";
+              animatorLevel.SetTrigger("load");
+              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[0].length, Load));
+          }));
+
+        //Invoke("Load", animatorMenu.runtimeAnimatorController.animationClips[0].length + animatorLevel.runtimeAnimatorController.animationClips[0].length);
     }
 
     private void Load()
