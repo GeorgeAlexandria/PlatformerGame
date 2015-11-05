@@ -39,7 +39,8 @@ public class GuiManager : MonoBehaviour
     private RuntimeManager runtime;
     private HeartsManager hearts;
 
-    private Animator animator;
+    private Animator animatorLevel;
+    private Animator animatorMenu;
     private GameObject imageLevel;
     private Text textLevel;
 
@@ -133,8 +134,11 @@ public class GuiManager : MonoBehaviour
         runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
 
-        animator = GetComponentInChildren<Animator>();
         imageLevel = GameObject.Find("LevelImage");
+
+        animatorLevel = imageLevel.GetComponent<Animator>();
+        animatorMenu = GameObject.Find("MenuPanel").GetComponent<Animator>();
+
         textLevel = imageLevel.GetComponentInChildren<Text>();
 
         imageLevel.SetActive(false);
@@ -142,8 +146,8 @@ public class GuiManager : MonoBehaviour
 
     public void StartClick()
     {
-        Invoke("Load", animator.runtimeAnimatorController.animationClips[0].length);
-        animator.SetTrigger("fade");
+        Invoke("Load", animatorMenu.runtimeAnimatorController.animationClips[0].length);
+        animatorMenu.SetTrigger("fade");
     }
 
     private void Load()
