@@ -33,6 +33,8 @@ public class GuiManager : MonoBehaviour
     public event ApplicationManager.RequestEventHandler LoadMenuRequest;
 
     public event ApplicationManager.RequestEventHandler DiedRequest;
+
+    public event ApplicationManager.RequestEventHandler<int> LevelRequest;
     #endregion
 
     private PanelsManager panels;
@@ -42,6 +44,7 @@ public class GuiManager : MonoBehaviour
     private Animator animatorLevel;
     private Animator animatorMenu;
     private GameObject imageLevel;
+    private Image menuImage;
     private Text textLevel;
 
     private enum StateMessage
@@ -77,6 +80,21 @@ public class GuiManager : MonoBehaviour
         { StateMessage.Finish,()=>
         {
             RuntimeHideMessageShadow();
+
+            //textLevel.text = "Level " + LevelRequest();
+            //animatorLevel.SetTrigger("load");
+            //StartCoroutine(DelayFunction(1f, () =>
+            //{
+            //    animatorLevel.ResetTrigger("load");
+            //    animatorLevel.SetTrigger("reset");
+            //}));
+            //StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length + 0.1f, () =>
+            //{
+            //    LoadRequest();
+            //    PlayRequest();
+            //    RuntimeShowPause();
+            //}));
+
             LoadRequest();
             PlayRequest();
             RuntimeShowPause();
@@ -107,14 +125,6 @@ public class GuiManager : MonoBehaviour
         { StateMessage.Finish,()=>
         {
             YesFunctions[StateMessage.Quit]();
-#region Old Call
-            //RuntimeHideMessageShadow();
-            //RuntimeShowPause();
-            //PlayRequest();
-            //panels.HideRuntime();
-            //panels.HideHearts();
-            //LoadMenuRequest();
-            #endregion
         } },
         { StateMessage.None,()=>
         {
@@ -134,14 +144,13 @@ public class GuiManager : MonoBehaviour
         runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
 
+        menuImage = gameObject.GetComponent<Image>();
         imageLevel = GameObject.Find("LevelImage");
 
         animatorLevel = imageLevel.GetComponent<Animator>();
         animatorMenu = GameObject.Find("MenuPanel").GetComponent<Animator>();
 
         textLevel = imageLevel.GetComponentInChildren<Text>();
-        //textLevel.enabled = false;
-        //imageLevel.SetActive(false);
     }
 
     static IEnumerator DelayFunction(float time, Action func)
@@ -152,29 +161,28 @@ public class GuiManager : MonoBehaviour
 
     public void StartClick()
     {
-        //animatorMenu.SetTrigger("fade");
         animatorMenu.SetTrigger("fade");
-        //imageLevel.SetActive(true);
-        //animatorLevel.SetTrigger("load");
         StartCoroutine(DelayFunction(animatorMenu.runtimeAnimatorController.animationClips[0].length, () =>
           {
-              //textLevel.enabled = true;
-              textLevel.text = "Level";
+              textLevel.text = "Level " + LevelRequest();
               animatorLevel.SetTrigger("load");
-              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length, Load));
+              StartCoroutine(DelayFunction(1f, () =>
+              {
+                  animatorLevel.ResetTrigger("load");
+                  animatorLevel.SetTrigger("reset");
+              }));
+              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length + 0.1f, () =>
+               {
+                   menuImage.enabled = false;
+                   panels.HideMenu();
+                   StartRequest();
+                   StartCoroutine(DelayFunction(0.2f, () =>
+                   {
+                       panels.ShowHearts();
+                       panels.ShowRuntime();
+                   }));
+               }));
           }));
-
-        //Invoke("Load", animatorMenu.runtimeAnimatorController.animationClips[0].length + animatorLevel.runtimeAnimatorController.animationClips[0].length);
-    }
-
-    private void Load()
-    {
-        panels.HideMenu();
-        StartRequest();
-        animatorLevel.SetTrigger("reset");
-        animatorLevel.ResetTrigger("load");
-        panels.ShowHearts();
-        panels.ShowRuntime();
     }
 
     public void OptionClick()

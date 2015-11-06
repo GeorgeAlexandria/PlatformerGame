@@ -13,7 +13,11 @@ public class ApplicationManager : MonoBehaviour
     #region Delegate
     public delegate void RequestEventHandler();
 
+    public delegate U RequestEventHandler<U>();
+
     public delegate void ParametrizedRequestEventHandler<T>(T arg);
+
+    public delegate U ParametrizedRequestEventHandler<T, U>(T arg);
     #endregion
 
     public static GuiManager gui { get; private set; }
@@ -51,6 +55,7 @@ public class ApplicationManager : MonoBehaviour
             Destroy(this.gameObject);
             level.LoadLevel(0);
         };
+        gui.LevelRequest += level.NextLevel;
 
         hero.ChangeCountHeartsRequest += gui.DrawHearts;
         hero.FinishLevel += gui.FinishLevelClick;

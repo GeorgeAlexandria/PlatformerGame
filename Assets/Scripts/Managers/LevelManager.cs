@@ -13,12 +13,9 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public int NextLevel
+    public int NextLevel()
     {
-        get
-        {
-            return Application.loadedLevel + 1;
-        }
+        return Application.loadedLevel + 1;
     }
 
     public void LoadLevel()
