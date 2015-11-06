@@ -12,6 +12,7 @@ public class GuiManager : MonoBehaviour
     public GameObject messagePanel;
     public GameObject shadowPanel;
     public GameObject heartPanel;
+    public GameObject loadPanel;
 
     public float ScaleHeart;
     public Sprite Heart;
@@ -40,12 +41,14 @@ public class GuiManager : MonoBehaviour
     private PanelsManager panels;
     private RuntimeManager runtime;
     private HeartsManager hearts;
+    private LoadManager load;
+    private MenuManager menu;
 
-    private Animator animatorLevel;
+    //private Animator animatorLevel;
     private Animator animatorMenu;
-    private GameObject imageLevel;
+    //private GameObject imageLevel;
     private Image menuImage;
-    private Text textLevel;
+    //private Text textLevel;
 
     private enum StateMessage
     {
@@ -60,6 +63,7 @@ public class GuiManager : MonoBehaviour
     private const string textQuit = "You really want to quit?";
     private const string textFinish = "Congratulations! You passed this level!\nDo you want to continue?";
     private const string textDie = "Unfortunately, you died... \nDo you want to restart game?";
+    private const string textLevel = "Level ";
     private StateMessage state;
 
     Dictionary<StateMessage, Action> YesFunctions;
@@ -140,17 +144,19 @@ public class GuiManager : MonoBehaviour
 
     void Awake()
     {
-        panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel, heartPanel);
+        panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel, heartPanel, loadPanel);
         runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
+        load = new LoadManager(loadPanel);
+        menu = new MenuManager(menuPanel);
 
         menuImage = gameObject.GetComponent<Image>();
-        imageLevel = GameObject.Find("LevelImage");
+        //imageLevel = GameObject.Find("LevelImage");
 
-        animatorLevel = imageLevel.GetComponent<Animator>();
+        //animatorLevel = imageLevel.GetComponent<Animator>();
         animatorMenu = GameObject.Find("MenuPanel").GetComponent<Animator>();
 
-        textLevel = imageLevel.GetComponentInChildren<Text>();
+        //textLevel = imageLevel.GetComponentInChildren<Text>();
     }
 
     static IEnumerator DelayFunction(float time, Action func)
@@ -161,28 +167,24 @@ public class GuiManager : MonoBehaviour
 
     public void StartClick()
     {
-        animatorMenu.SetTrigger("fade");
+        //animatorMenu.SetTrigger("fade");
+        menu.FadeMenu();
         StartCoroutine(DelayFunction(animatorMenu.runtimeAnimatorController.animationClips[0].length, () =>
-          {
-              textLevel.text = "Level " + LevelRequest();
-              animatorLevel.SetTrigger("load");
-              StartCoroutine(DelayFunction(1f, () =>
-              {
-                  animatorLevel.ResetTrigger("load");
-                  animatorLevel.SetTrigger("reset");
-              }));
-              StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length + 0.1f, () =>
-               {
-                   menuImage.enabled = false;
-                   panels.HideMenu();
-                   StartRequest();
-                   StartCoroutine(DelayFunction(0.2f, () =>
-                   {
-                       panels.ShowHearts();
-                       panels.ShowRuntime();
-                   }));
-               }));
-          }));
+        {
+            load.ShowImage(textLevel + LevelRequest());
+            StartCoroutine(DelayFunction(1f, load.HideImage));
+            StartCoroutine(DelayFunction(load.GetLoadClipLength() + 0.1f, () =>
+            {
+                menuImage.enabled = false;
+                panels.HideMenu();
+                StartRequest();
+                StartCoroutine(DelayFunction(0.2f, () =>
+                {
+                    panels.ShowHearts();
+                    panels.ShowRuntime();
+                }));
+            }));
+        }));
     }
 
     public void OptionClick()
