@@ -49,6 +49,9 @@ public class HeroScript : MonoBehaviour
     private const string run = "Run";
     private const string jump = "Jump";
     private const string fall = "Fall";
+    private const string restart = "Restart";
+
+    private bool isRestart = true;
 
     private bool isGrounded = true;
     private bool isPreviouslyGrounded;
@@ -115,6 +118,8 @@ public class HeroScript : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isRestart) return;
+
         newPosition = rigidBody.position;
         rigidBody.gravityScale = normalGravity;
 
@@ -151,6 +156,8 @@ public class HeroScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == restart) return;
+        isRestart = false;
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             isJump = true;
@@ -250,20 +257,29 @@ public class HeroScript : MonoBehaviour
         }
     }
 
+    //Don't shure that it's the best way to solve problem
+    private void SetParamsForRestart()
+    {
+        animator.CrossFade(restart, 0f);
+        animator.Update(0);
+
+        isRestart = true;
+        rigidBody.velocity = new Vector2(0, 0);
+    }
+
     //Need modify
     void Died()
     {
         rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
         countHearts--;
+        SetParamsForRestart();
     }
 
     void OnLevelWasLoaded(int level)
     {
         if (level == 0) return;
-        //gameObject.SetActive(true);
 
-        //LoadRequest();
-        //gameObject.SetActive(true);
+        SetParamsForRestart();
         if (level == state.lastLevel)
         {
             rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);

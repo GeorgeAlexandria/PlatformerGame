@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 8f4697926eb0ff842b60732dddf57c07
-timeCreated: 1442777022
+timeCreated: 1446904972
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -44,6 +44,7 @@ TextureImporter:
     21300074: Dinosaur_27
     21300076: Dinosaur_29
     21300078: Dinosaur_30
+    21300080: Dinosaur_1
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -103,7 +104,7 @@ TextureImporter:
         width: 116
         height: 115
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Dinosaur_21
       rect:
@@ -123,7 +124,7 @@ TextureImporter:
         width: 124
         height: 112
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Dinosaur_25
       rect:
@@ -133,7 +134,7 @@ TextureImporter:
         width: 134
         height: 114
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: Dinosaur_27
       rect:
@@ -163,7 +164,17 @@ TextureImporter:
         width: 122
         height: 112
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Dinosaur_1
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 303
+        width: 104
+        height: 110
+      alignment: 0
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

@@ -19,7 +19,7 @@ public class MenuManager
 
     public void EnableButtons()
     {
-        buttons.Select(x => x.enabled = true);
+        buttons.ToList().ForEach(x => x.enabled = true);
     }
 
     public void DisableButtons()
