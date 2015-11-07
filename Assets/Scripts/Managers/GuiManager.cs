@@ -44,11 +44,7 @@ public class GuiManager : MonoBehaviour
     private LoadManager load;
     private MenuManager menu;
 
-    //private Animator animatorLevel;
-    private Animator animatorMenu;
-    //private GameObject imageLevel;
-    private Image menuImage;
-    //private Text textLevel;
+    private Image background;
 
     private enum StateMessage
     {
@@ -150,13 +146,7 @@ public class GuiManager : MonoBehaviour
         load = new LoadManager(loadPanel);
         menu = new MenuManager(menuPanel);
 
-        menuImage = gameObject.GetComponent<Image>();
-        //imageLevel = GameObject.Find("LevelImage");
-
-        //animatorLevel = imageLevel.GetComponent<Animator>();
-        animatorMenu = GameObject.Find("MenuPanel").GetComponent<Animator>();
-
-        //textLevel = imageLevel.GetComponentInChildren<Text>();
+        background = gameObject.GetComponent<Image>();
     }
 
     static IEnumerator DelayFunction(float time, Action func)
@@ -167,15 +157,15 @@ public class GuiManager : MonoBehaviour
 
     public void StartClick()
     {
-        //animatorMenu.SetTrigger("fade");
+        menu.DisableButtons();
         menu.FadeMenu();
-        StartCoroutine(DelayFunction(animatorMenu.runtimeAnimatorController.animationClips[0].length, () =>
+        StartCoroutine(DelayFunction(menu.GetFadeLength(), () =>
         {
             load.ShowImage(textLevel + LevelRequest());
             StartCoroutine(DelayFunction(1f, load.HideImage));
-            StartCoroutine(DelayFunction(load.GetLoadClipLength() + 0.1f, () =>
+            StartCoroutine(DelayFunction(load.GetLoadLength(), () =>
             {
-                menuImage.enabled = false;
+                background.enabled = false;
                 panels.HideMenu();
                 StartRequest();
                 StartCoroutine(DelayFunction(0.2f, () =>

@@ -24,11 +24,16 @@ public class MenuManager
 
     public void DisableButtons()
     {
-        buttons.Select(x => x.enabled = false);
+        buttons.ToList().ForEach(x => x.enabled = false);
     }
 
     public void FadeMenu()
     {
         animator.SetTrigger(fade);
+    }
+
+    public float GetFadeLength()
+    {
+        return animator.runtimeAnimatorController.animationClips.First(x => x.name == "Fade").length;
     }
 }

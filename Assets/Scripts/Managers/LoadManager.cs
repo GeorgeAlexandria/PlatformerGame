@@ -29,7 +29,7 @@ public class LoadManager
         animator.SetTrigger(reset);
     }
 
-    public float GetLoadClipLength()
+    public float GetLoadLength()
     {
         return animator.runtimeAnimatorController.animationClips.First(x => x.name == "Load").length;
     }
