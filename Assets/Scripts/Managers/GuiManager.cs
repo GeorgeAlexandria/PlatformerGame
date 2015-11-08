@@ -81,23 +81,18 @@ public class GuiManager : MonoBehaviour
         {
             RuntimeHideMessageShadow();
 
-            //textLevel.text = "Level " + LevelRequest();
-            //animatorLevel.SetTrigger("load");
-            //StartCoroutine(DelayFunction(1f, () =>
-            //{
-            //    animatorLevel.ResetTrigger("load");
-            //    animatorLevel.SetTrigger("reset");
-            //}));
-            //StartCoroutine(DelayFunction(animatorLevel.runtimeAnimatorController.animationClips[1].length + 0.1f, () =>
-            //{
-            //    LoadRequest();
-            //    PlayRequest();
-            //    RuntimeShowPause();
-            //}));
+            load.ShowImage(textLevel + LevelRequest());
+            StartCoroutine(DelayFunction(load.GetLoadLength(),()=>
+            {
+                load.HideImage();
+                LoadRequest();
+                PlayRequest();
+                RuntimeShowPause();
+            }));
 
-            LoadRequest();
-            PlayRequest();
-            RuntimeShowPause();
+            //LoadRequest();
+            //PlayRequest();
+            //RuntimeShowPause();
         }},
         { StateMessage.None,()=> { } },
         { StateMessage.Quit,()=>

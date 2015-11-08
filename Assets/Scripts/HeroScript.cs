@@ -229,8 +229,12 @@ public class HeroScript : MonoBehaviour
     //Need modify
     void OnCollisionEnter2D(Collision2D collision)
     {
+        var h = collision.contacts;
+        var t = collision.collider;
         IsGrounded();
-        if (collision.collider.tag == "Die")
+        //Use this condition for solve problem with some collider hero collision with Die collider
+        //Without this condition hero can last 2 hit point if enter with die fall collider
+        if (collision.collider.tag == "Die" && rigidBody.transform.position != state.position)
         {
             Died();
         }
