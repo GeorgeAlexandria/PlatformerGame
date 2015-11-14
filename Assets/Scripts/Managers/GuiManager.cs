@@ -4,31 +4,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 
-class WaitForReal : YieldInstruction
-{
-    public WaitForReal(float delay)
-    {
-        Debug.Log(string.Format("Hi {0}", Time.realtimeSinceStartup));
-
-        while (true)
-        {
-
-            float pauseEndTime = Time.realtimeSinceStartup + delay;
-            Debug.Log(string.Format("real:{0}, add: {1}", Time.realtimeSinceStartup, pauseEndTime));
-
-            while (Time.realtimeSinceStartup < pauseEndTime)
-            {
-                Debug.Log(string.Format("Hi {0}", Time.realtimeSinceStartup));
-
-                return;
-            }
-            break;
-        }
-    }
-}
-
-
-
 public class GuiManager : MonoBehaviour
 {
     public GameObject optionPanel;
@@ -109,18 +84,19 @@ public class GuiManager : MonoBehaviour
              panels.HideRuntime();
 
              load.ShowImage(textLevel + LevelRequest());
-             StartCoroutine(DelayFunctionR(1f, load.HideImage));
-             StartCoroutine(DelayFunctionR(load.GetLoadLength(), () =>
+             this.StartCoroutine(1f, load.HideImage);
+
+             this.StartCoroutine(load.GetLoadLength(), () =>
              {
                  LoadRequest();
                  PlayRequest();
-                 StartCoroutine(DelayFunction(0.2f, () =>
+                 this.StartCoroutine(0.2f, () =>
                  {
                      panels.ShowHearts();
                      panels.ShowRuntime();
-                 }));
+                 });
                  RuntimeShowPause();
-             }));
+             });
         }},
         { StateMessage.None,()=> { } },
         { StateMessage.Quit,()=>
@@ -172,52 +148,27 @@ public class GuiManager : MonoBehaviour
         background = gameObject.GetComponent<Image>();
     }
 
-    IEnumerator DelayFunction(float time, Action func)
-    {
-        yield return new WaitForSeconds(time);
-        func();
-    }
-
-    IEnumerator DelayFunctionR(float time, Action func)
-    {
-        yield return StartCoroutine(WaitForRealTime(time));
-        func();
-    }
-
-    public IEnumerator WaitForRealTime(float delay)
-    {
-        while (true)
-        {
-            float pauseEndTime = Time.realtimeSinceStartup + delay;
-            while (Time.realtimeSinceStartup < pauseEndTime)
-            {
-                yield return null;
-            }
-            break;
-        }
-    }
-
     public void StartClick()
     {
         menu.DisableButtons();
         menu.FadeMenu();
-        StartCoroutine(DelayFunction(menu.GetFadeLength(), () =>
+        this.StartCoroutine(menu.GetFadeLength(), () =>
         {
             load.ShowImage(textLevel + LevelRequest());
-            StartCoroutine(DelayFunction(1f, load.HideImage));
-            StartCoroutine(DelayFunction(load.GetLoadLength(), () =>
+            this.StartCoroutine(1f, load.HideImage);
+            this.StartCoroutine(load.GetLoadLength(), () =>
             {
                 background.enabled = false;
                 panels.HideMenu();
                 StartRequest();
-                StartCoroutine(DelayFunction(0.2f, () =>
+                this.StartCoroutine(0.2f, () =>
                 {
                     panels.ShowHearts();
                     panels.ShowRuntime();
                     PlayRequest();
-                }));
-            }));
-        }));
+                });
+            });
+        });
     }
 
     public void OptionClick()
