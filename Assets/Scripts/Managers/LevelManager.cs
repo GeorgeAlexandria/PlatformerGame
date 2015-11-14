@@ -26,14 +26,10 @@ public class LevelManager : MonoBehaviour
     public void LoadLevel(int number)
     {
         Application.LoadLevel(number);
-        //Application.LoadLevelAsync(number);
-        //LoadRequest();
     }
 
     public void RestartLevel()
     {
         Application.LoadLevel(Application.loadedLevel);
-        //RestartRequest();
     }
-
 }

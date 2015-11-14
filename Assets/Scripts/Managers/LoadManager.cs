@@ -19,6 +19,8 @@ public class LoadManager
 
     public void ShowImage(string arg)
     {
+
+        animator.ResetTrigger(reset);
         animator.SetTrigger(load);
         text.text = arg;
     }
