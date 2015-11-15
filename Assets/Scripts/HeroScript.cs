@@ -282,8 +282,8 @@ public class HeroScript : MonoBehaviour
     void OnLevelWasLoaded(int level)
     {
         if (level == 0) return;
-
         SetParamsForRestart();
+       
         if (level == state.lastLevel)
         {
             rigidBody.transform.position = Vector3.Lerp(rigidBody.position, state.position, 1f);
@@ -292,7 +292,7 @@ public class HeroScript : MonoBehaviour
         }
         rigidBody.transform.position = Vector3.Lerp(rigidBody.position, GameObject.Find("HeroPosition").transform.position, 1f);
         //Only for invoke event
-        countHearts = countHearts;
+        countHearts = level < state.lastLevel ? 3 : countHearts;
         state = new InnerState(rigidBody.position, countHearts, level);
     }
 }
