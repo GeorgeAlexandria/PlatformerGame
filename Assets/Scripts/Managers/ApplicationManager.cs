@@ -56,6 +56,7 @@ public class ApplicationManager : MonoBehaviour
             level.LoadLevel(0);
         };
         gui.LevelRequest += level.NextLevel;
+        gui.LastLevelRequest += level.IsLastLevel;
 
         hero.ChangeCountHeartsRequest += gui.DrawHearts;
         hero.FinishLevel += gui.FinishLevelClick;
