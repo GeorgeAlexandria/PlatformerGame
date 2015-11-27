@@ -7,6 +7,7 @@ public class CameraScript : MonoBehaviour
     private const float maxDistance = 3.0f;
     private Vector3 delta;
     private const int positionZ = -10;
+    private float aspect = 23f / 10f;
 
     void Awake()
     {
@@ -17,6 +18,7 @@ public class CameraScript : MonoBehaviour
     void Start()
     {
         delta = target.GetComponent<Rigidbody2D>().transform.position - Camera.main.transform.position;
+        Camera.main.aspect = aspect;
     }
 
     void OnLevelWasLoaded(int level)
