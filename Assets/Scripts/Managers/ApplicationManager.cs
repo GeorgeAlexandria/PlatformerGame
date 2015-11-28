@@ -1,9 +1,4 @@
 ﻿using UnityEngine;
-//using UnityScript.Lang;
-//using UnityScript;
-//using UnityEngine.Scripting;
-//using UnityEngine.Events;
-//using UnityEditor;
 using System;
 
 using System.Collections;

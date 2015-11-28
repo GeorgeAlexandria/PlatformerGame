@@ -15,10 +15,6 @@ public class GuiManager : MonoBehaviour
     public GameObject LoadPanel;
     public GameObject OpeningPanel;
 
-    public float ScaleHeart;
-    public Sprite Heart;
-    public Vector2 Position;
-
     #region Events
     public event ApplicationManager.RequestEventHandler QuitRequest;
 
@@ -146,7 +142,7 @@ public class GuiManager : MonoBehaviour
     {
         panels = new PanelsManager(OptionPanel, MenuPanel, RuntimePanel, MessagePanel, ShadowPanel, HeartPanel, LoadPanel, OpeningPanel);
         runtime = new RuntimeManager(RuntimePanel.GetComponentsInChildren<Button>(true));
-        hearts = new HeartsManager(Heart, Position, ScaleHeart);
+        hearts = new HeartsManager();
         load = new LoadManager(LoadPanel);
         menu = new MenuManager(MenuPanel);
         opening = new OpeningManager(OpeningPanel);
@@ -273,6 +269,6 @@ public class GuiManager : MonoBehaviour
     public void OpeningClick()
     {
         panels.ShowOpening();
-        this.StartCoroutine(opening.GetShowLength(), panels.HideOpening);
+        this.StartCoroutine(opening.GetOpeningLength(), panels.HideOpening);
     }
 }

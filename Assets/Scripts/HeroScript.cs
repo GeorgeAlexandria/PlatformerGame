@@ -94,18 +94,6 @@ public class HeroScript : MonoBehaviour
         state = new InnerState(rigidBody.position, countHearts);
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        //gameObject.SetActive(false);
-        //AwakeRequest();
-
-        //rigidBody = GetComponent<Rigidbody2D>();
-        //animator = GetComponent<Animator>();
-        //normalGravity = rigidBody.gravityScale;
-        //state = new InnerState(rigidBody.position, countHearts);
-    }
-
     bool CheckCount(int arg)
     {
         if (count++ >= arg)
