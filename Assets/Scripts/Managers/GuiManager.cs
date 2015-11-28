@@ -62,7 +62,7 @@ public class GuiManager : MonoBehaviour
     private const string textRestart = "You really want to restart level?";
     private const string textQuit = "You really want to quit?";
     private const string textFinish = "Congratulations!\nYou passed this level!\nDo you want to continue?";
-    private const string textPass = "Congratulations!\nYou passed game!\nDo you want to restart game??";
+    private const string textPass = "Congratulations!\nYou passed game!\nDo you want to restart game?";
     private const string textDie = "Unfortunately, you died... \nDo you want to restart game?";
     private const string textLevel = "Level ";
     private StateMessage state;
