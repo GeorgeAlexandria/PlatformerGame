@@ -6,13 +6,14 @@ using System;
 
 public class GuiManager : MonoBehaviour
 {
-    public GameObject optionPanel;
-    public GameObject menuPanel;
-    public GameObject runtimePanel;
-    public GameObject messagePanel;
-    public GameObject shadowPanel;
-    public GameObject heartPanel;
-    public GameObject loadPanel;
+    public GameObject OptionPanel;
+    public GameObject MenuPanel;
+    public GameObject RuntimePanel;
+    public GameObject MessagePanel;
+    public GameObject ShadowPanel;
+    public GameObject HeartPanel;
+    public GameObject LoadPanel;
+    public GameObject OpeningPanel;
 
     public float ScaleHeart;
     public Sprite Heart;
@@ -45,6 +46,7 @@ public class GuiManager : MonoBehaviour
     private HeartsManager hearts;
     private LoadManager load;
     private MenuManager menu;
+    private OpeningManager opening;
 
     private Image background;
 
@@ -60,7 +62,7 @@ public class GuiManager : MonoBehaviour
     private const string textRestart = "You really want to restart level?";
     private const string textQuit = "You really want to quit?";
     private const string textFinish = "Congratulations!\nYou passed this level!\nDo you want to continue?";
-    private const string textPass = "Congratulations!\nYou passed game!\nDo you want to continue from 1st level?";
+    private const string textPass = "Congratulations!\nYou passed game!\nDo you want to restart game??";
     private const string textDie = "Unfortunately, you died... \nDo you want to restart game?";
     private const string textLevel = "Level ";
     private StateMessage state;
@@ -142,11 +144,12 @@ public class GuiManager : MonoBehaviour
 
     void Awake()
     {
-        panels = new PanelsManager(optionPanel, menuPanel, runtimePanel, messagePanel, shadowPanel, heartPanel, loadPanel);
-        runtime = new RuntimeManager(runtimePanel.GetComponentsInChildren<Button>(true));
+        panels = new PanelsManager(OptionPanel, MenuPanel, RuntimePanel, MessagePanel, ShadowPanel, HeartPanel, LoadPanel, OpeningPanel);
+        runtime = new RuntimeManager(RuntimePanel.GetComponentsInChildren<Button>(true));
         hearts = new HeartsManager(Heart, Position, ScaleHeart);
-        load = new LoadManager(loadPanel);
-        menu = new MenuManager(menuPanel);
+        load = new LoadManager(LoadPanel);
+        menu = new MenuManager(MenuPanel);
+        opening = new OpeningManager(OpeningPanel);
 
         background = gameObject.GetComponent<Image>();
     }
@@ -265,5 +268,11 @@ public class GuiManager : MonoBehaviour
     public void DrawHearts(int count)
     {
         hearts.ChangeCount(count);
+    }
+
+    public void OpeningClick()
+    {
+        panels.ShowOpening();
+        this.StartCoroutine(opening.GetShowLength(), panels.HideOpening);
     }
 }

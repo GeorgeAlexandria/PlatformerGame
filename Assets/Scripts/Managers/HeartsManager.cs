@@ -62,7 +62,7 @@ public class HeartsManager
 
     public void ChangeCount(int count)
     {
-        GameObject[] hearts = ApplicationManager.gui.heartPanel.GetComponentsInChildren<Image>(true).Select(x => x.gameObject).ToArray();
+        GameObject[] hearts = ApplicationManager.gui.HeartPanel.GetComponentsInChildren<Image>(true).Select(x => x.gameObject).ToArray();
         int countHeart = 0;
         for (int i = 0; i < hearts.Length; i++)
         {

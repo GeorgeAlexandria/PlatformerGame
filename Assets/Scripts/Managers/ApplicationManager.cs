@@ -65,6 +65,11 @@ public class ApplicationManager : MonoBehaviour
         hero.DiedRequest += gui.DieClick;
     }
 
+    void Start()
+    {
+        gui.OpeningClick();
+    }
+
     public void StartApplication()
     {
         hero.gameObject.SetActive(true);

@@ -69,7 +69,7 @@ public class HeroScript : MonoBehaviour
 
     private float normalGravity;
     private float extendedGravity = 20f;
-    private int countRepeat = 10;
+    private int countRepeat = 5;
     #endregion
 
     private struct InnerState
